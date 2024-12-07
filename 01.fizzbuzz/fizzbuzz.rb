@@ -1,5 +1,5 @@
 def fizzbuzz
-  x = 100
+  x = 20
   array = (1..x).to_a
   array.each do |num|
     if num % 15 == 0
