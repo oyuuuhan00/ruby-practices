@@ -1,3 +1,5 @@
+require 'debug'
+
 def fizzbuzz
   x = 20
   array = (1..x).to_a
