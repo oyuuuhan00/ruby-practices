@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+require 'debug'
+
+>>>>>>> f15a89aa5a4eefed6d4a17f02549cecb43f3e099
 def fizzbuzz
   x = 20
   array = (1..x).to_a
