@@ -1,7 +1,6 @@
 def fizzbuzz
-  x = 20
-  array = (1..x).to_a
-  array.each do |num|
+  number = 20
+  (1..number).each do |num|
     if num % 15 == 0
       puts "fizzbuzz"
     elsif num % 3 == 0
