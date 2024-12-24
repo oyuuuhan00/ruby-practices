@@ -19,15 +19,15 @@ point = frames.each_with_index.sum do |frame, index|
   if index < 9
     if frame[0] == 10 # Strike
       10 +
-      frames[index + 1][0] +
-      (frames[index + 1][0] == 10 ? frames[index + 2][0] : frames[index + 1][1])
+        frames[index + 1][0] +
+        (frames[index + 1][0] == 10 ? frames[index + 2][0] : frames[index + 1][1])
     elsif frame.sum == 10 # Spare
       frame.sum + frames[index + 1][0]
     else
       frame.sum
     end
   else
-    frame.sum 
+    frame.sum
   end
 end
 
