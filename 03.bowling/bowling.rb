@@ -22,7 +22,7 @@ point = frames.each_with_index.sum do |frame, index|
       frames[index + 1][0] +
       (frames[index + 1][0] == 10 ? frames[index + 2][0] : frames[index + 1][1])
     elsif frame.sum == 10 # Spare
-      10 + frames[index + 1][0]
+      frame.sum + frames[index + 1][0]
     else
       frame.sum
     end
