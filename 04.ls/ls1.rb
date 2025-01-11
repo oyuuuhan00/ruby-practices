@@ -21,7 +21,7 @@ def build_up(divided_file_names)
   file_names_to_output = []
 
   (0...max_length).each do |i|
-    row = divided_file_names.map { |array| array[i].to_s.ljust(16) if array[i] }.join
+    row = divided_file_names.map { |array| array[i]&.to_s&.ljust(16) }.join
     file_names_to_output << row
   end
   file_names_to_output
