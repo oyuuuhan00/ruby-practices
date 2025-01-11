@@ -3,25 +3,32 @@
 
 def run
   number_of_columns = 3
-  file_name = Dir.glob('*')
-  nested_file_name = file_name_arrange(file_name, number_of_columns)
-  build_up(nested_file_name)
+  file_names = Dir.glob('*')
+  divided_file_names = divide_file_names(file_names, number_of_columns)
+  build_up(divided_file_names)
+  file_names_to_output = build_up(divided_file_names)
+  output(file_names_to_output)
 end
 
-def file_name_arrange(file_name, number_of_columns)
-  file_names = Rational(file_name.size, number_of_columns).ceil
-  file_name.each_slice(file_names).to_a
+def divide_file_names(file_names, number_of_columns)
+  number_of_filename = Rational(file_names.size, number_of_columns).ceil
+  file_names.each_slice(number_of_filename).to_a
 end
 
-def build_up(nested_file_name)
-  max_length = nested_file_name.max_by(&:length).length
+def build_up(divided_file_names)
+  max_length = divided_file_names.max_by(&:length).length
+
+  file_names_to_output = []
 
   (0...max_length).each do |i|
-    nested_file_name.each do |array|
-      print array[i].to_s.ljust(16) if array[i]
-    end
-    puts
+    row = divided_file_names.map { |array| array[i].to_s.ljust(16) if array[i] }.join
+    file_names_to_output << row
   end
+  file_names_to_output
+end
+
+def output(file_names_to_output)
+  file_names_to_output.each { |line| puts line }
 end
 
 run
