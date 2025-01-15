@@ -18,12 +18,21 @@ end
 def build_up(divided_file_names)
   max_length = divided_file_names.max_by(&:length).length
 
+  columns_max_length = divided_file_names.map do |array|
+    array.map(&:to_s).map(&:length).max
+  end
+
   file_names_to_output = []
 
   (0...max_length).each do |i|
-    row = divided_file_names.map { |array| array[i]&.to_s&.ljust(16) }.join
+    row = divided_file_names.map.with_index do |array, col_index|
+      item = array[i].to_s
+      item.ljust(columns_max_length[col_index] + 6)
+    end.join
+
     file_names_to_output << row
   end
+
   file_names_to_output
 end
 
