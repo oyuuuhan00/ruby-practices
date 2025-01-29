@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'optparse'
+
 def run
   number_of_columns = 3
-  file_names = Dir.glob('*')
+  file_names = enter_files
   divided_file_names = divide_file_names(file_names, number_of_columns)
-  build_up(divided_file_names)
   file_names_to_output = build_up(divided_file_names)
   output(file_names_to_output)
 end
@@ -38,6 +39,15 @@ end
 
 def output(file_names_to_output)
   file_names_to_output.each { |line| puts line }
+end
+
+def enter_files
+  options = ARGV.getopts('a')
+  if options['a']
+    Dir.glob('*', File::FNM_DOTMATCH)
+  else
+    Dir.glob('*')
+  end
 end
 
 run
