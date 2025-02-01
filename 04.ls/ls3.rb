@@ -45,10 +45,10 @@ end
 
 def enter_files(options)
   files = if options['a']
-    Dir.glob('*', File::FNM_DOTMATCH)
-  else
-    Dir.glob('*')
-  end
+            Dir.glob('*', File::FNM_DOTMATCH)
+          else
+            Dir.glob('*')
+          end
   files = files.reverse if options['r']
   files
 end
