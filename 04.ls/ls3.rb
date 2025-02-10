@@ -3,9 +3,11 @@
 
 require 'optparse'
 
-def run
+options = ARGV.getopts('ar')
+
+def run(options)
   number_of_columns = 3
-  file_names = enter_files
+  file_names = enter_files(options)
   divided_file_names = divide_file_names(file_names, number_of_columns)
   file_names_to_output = build_up(divided_file_names)
   output(file_names_to_output)
@@ -41,13 +43,14 @@ def output(file_names_to_output)
   file_names_to_output.each { |line| puts line }
 end
 
-def enter_files
-  options = ARGV.getopts('a')
-  if options['a']
-    Dir.glob('*', File::FNM_DOTMATCH)
-  else
-    Dir.glob('*')
-  end
+def enter_files(options)
+  files = if options['a']
+            Dir.glob('*', File::FNM_DOTMATCH)
+          else
+            Dir.glob('*')
+          end
+  files = files.reverse if options['r']
+  files
 end
 
-run
+run(options)
