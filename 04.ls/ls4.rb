@@ -33,17 +33,55 @@ def main
 end
 
 def list_files(files, long_format: false)
-  long_format = list_long(files)
+  long_format ? list_long(files) : list_short(files)
+end
+
+def list_short(files)
+  number_of_columns = 3
+  divided_file_names = divide_file_names(files, number_of_columns)
+  build_up(divided_file_names)
+  file_names_to_output = build_up(divided_file_names)
+  output(file_names_to_output)
+end
+
+def divide_file_names(file_names, number_of_columns)
+  number_of_filename = Rational(file_names.size, number_of_columns).ceil
+  file_names.each_slice(number_of_filename).to_a
+end
+
+def build_up(divided_file_names)
+  max_length = divided_file_names.max_by(&:length).length
+
+  columns_max_length = divided_file_names.map do |array|
+    array.map(&:to_s).map(&:length).max
+  end
+
+  file_names_to_output = []
+
+  (0...max_length).each do |i|
+    row = divided_file_names.map.with_index do |array, col_index|
+      item = array[i].to_s
+      item.ljust(columns_max_length[col_index] + 6)
+    end.join
+
+    file_names_to_output << row
+  end
+
+  file_names_to_output
+end
+
+def output(file_names_to_output)
+  file_names_to_output.each { |line| puts line }
 end
 
 def build_filetype(file_stat)
   file_type = TYPE_LIST[format('%06o', file_stat.mode)[0, 2]]
-  "#{file_type}"
+  file_type.to_s
 end
 
 def build_filemode(file_stat)
   permissions = file_stat.mode.to_s(8)[-3..].chars.map { |num| PERMISSION_LIST[num] }
-  "#{permissions.join("")}"
+  permissions.join('').to_s
 end
 
 def list_long(files)
@@ -63,7 +101,6 @@ def get_max_length_map(long_formats)
     file_size: long_formats.map { |long_format| long_format[:file_size].size }.max
   }
 end
-
 
 def get_longformats(files)
   files_stat = File::Stat.new(files)
