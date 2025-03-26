@@ -39,9 +39,8 @@ end
 def list_short(files)
   number_of_columns = 3
   divided_file_names = divide_file_names(files, number_of_columns)
-  build_up(divided_file_names)
-  file_names_to_output = build_up(divided_file_names)
-  output(file_names_to_output)
+  built_up = build_up(divided_file_names)
+  puts built_up
 end
 
 def divide_file_names(file_names, number_of_columns)
@@ -53,25 +52,15 @@ def build_up(divided_file_names)
   max_length = divided_file_names.max_by(&:length).length
 
   columns_max_length = divided_file_names.map do |array|
-    array.map(&:to_s).map(&:length).max
+    array.map(&:length).max
   end
 
-  file_names_to_output = []
-
-  (0...max_length).each do |i|
-    row = divided_file_names.map.with_index do |array, col_index|
+  (0...max_length).map do |i|
+    divided_file_names.map.with_index do |array, col_index|
       item = array[i].to_s
       item.ljust(columns_max_length[col_index] + 6)
     end.join
-
-    file_names_to_output << row
   end
-
-  file_names_to_output
-end
-
-def output(file_names_to_output)
-  file_names_to_output.each { |line| puts line }
 end
 
 def build_filetype(file_stat)
@@ -85,15 +74,15 @@ def build_filemode(file_stat)
 end
 
 def list_long(files)
-  long_formats = files.map { |file| get_longformats(file) }
-  max_length_map = get_max_length_map(long_formats)
+  long_formats = files.map { |file| fetch_file_details(file) }
+  max_length_map = find_max_lengths(long_formats)
   block_total = long_formats.map { |long_format| long_format[:blocks] }.sum
 
   puts "total #{block_total}"
   long_formats.each { |long_format| print_long_format(long_format, max_length_map) }
 end
 
-def get_max_length_map(long_formats)
+def find_max_lengths(long_formats)
   {
     number_of_links: long_formats.map { |long_format| long_format[:number_of_links].size }.max,
     owner_name: long_formats.map { |long_format| long_format[:owner_name].size }.max,
@@ -102,7 +91,7 @@ def get_max_length_map(long_formats)
   }
 end
 
-def get_longformats(files)
+def fetch_file_details(files)
   files_stat = File::Stat.new(files)
   {
     file_type: build_filetype(files_stat),
