@@ -39,8 +39,8 @@ end
 def list_short(files)
   number_of_columns = 3
   divided_file_names = divide_file_names(files, number_of_columns)
-  built_up = build_up(divided_file_names)
-  puts built_up
+  built_up_rows = build_up_columns(divided_file_names)
+  puts built_up_rows
 end
 
 def divide_file_names(file_names, number_of_columns)
@@ -48,7 +48,7 @@ def divide_file_names(file_names, number_of_columns)
   file_names.each_slice(number_of_filename).to_a
 end
 
-def build_up(divided_file_names)
+def build_up_columns(divided_file_names)
   max_length = divided_file_names.max_by(&:length).length
 
   columns_max_length = divided_file_names.map do |array|
