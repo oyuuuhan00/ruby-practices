@@ -39,8 +39,7 @@ end
 def list_short(files)
   number_of_columns = 3
   divided_file_names = divide_file_names(files, number_of_columns)
-  built_up_rows = build_up_columns(divided_file_names)
-  puts built_up_rows
+  puts build_up_columns(divided_file_names)
 end
 
 def divide_file_names(file_names, number_of_columns)
