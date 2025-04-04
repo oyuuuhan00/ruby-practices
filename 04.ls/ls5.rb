@@ -26,14 +26,19 @@ PERMISSION_LIST = {
 }.freeze
 
 def main
-  params = ARGV.getopts('l')
+  params = ARGV.getopts('alr')
 
-  files = Dir.glob('*')
-  list_files(files, long_format: params['l'])
+  files = get_files(dotmatch: params['a'])
+  list_files(files, long_format: params['l'], reverse: params['r'])
 end
 
-def list_files(files, long_format: false)
-  long_format ? list_long(files) : list_short(files)
+def get_files(dotmatch: false)
+  dotmatch ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
+end
+
+def list_files(files, long_format: false, reverse: false)
+  paths = reverse ? files.reverse : files
+  long_format ? list_long(paths) : list_short(paths)
 end
 
 def list_short(files)
