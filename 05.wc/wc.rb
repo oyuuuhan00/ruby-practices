@@ -24,7 +24,7 @@ def parse_options
 end
 
 def count_from_file(path)
-  text = File.read(path, encoding: 'UTF-8', invalid: :replace, undef: :replace, replace: '?')
+  text = File.read(path)
   count_data(text).merge(path: path)
 end
 
@@ -34,8 +34,8 @@ end
 
 def count_data(text)
   {
-    l: text.count("\n"),
-    w: text.split(/\s+/).size,
+    l: text.lines.count,
+    w: text.split(/\s+/).count { |element| !element.empty? },
     c: text.bytesize
   }
 end
@@ -45,7 +45,7 @@ def print_count(count, options)
   output << count[:l].to_s.rjust(8) if options[:l]
   output << count[:w].to_s.rjust(8) if options[:w]
   output << count[:c].to_s.rjust(8) if options[:c]
-  output << " #{count[:path]}" unless count[:path].empty?
+  output << " #{count[:path]}"
   puts output.join
 end
 
